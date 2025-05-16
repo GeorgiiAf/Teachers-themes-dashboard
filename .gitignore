@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+venv/
+env/
+.venv/
+.env/
+
+instance/
+*.env
+
+*.db
+
+*.pyc
+*.pyo
+*.pyd
+
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Docker
+docker-compose.override.yml
+migrations/
+

@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Authorization{% endblock %}
+
+{% block content %}
+
+<form method="post" class="form-control d-flex flex-column gap-2">
+    {{ form.csrf_token }}
+    {{ form.login }}
+
+
+    {{ form.password }}
+
+    <div class="form-check d-flex justify-content-center gap-2">
+        {{ form.remember(class="form-check-input") }}
+        {{ form.remember.label(class="form-check-label ms-2") }}
+    </div>
+    {{ form.submit }}
+</form>
+
+{% endblock %}
+
