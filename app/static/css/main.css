@@ -1,31 +1,64 @@
 @import url('fonts.css');
 
-body {
-    background: #212529;
-    color : #fff;
+:root {
+    --text-primary: #ffffff;
+    --text-heading: #f8f9fa;
+    --text-secondary: #e9ecef;
+    --text-muted: #adb5bd;
+    --text-dark: #212529;
+
+    --bg-dark: #212529;
+    --bg-card: #2d3338;
+    --bg-select: #343a40;
+
+    --accent-primary: #4e73df;
+    --accent-hover: #3a56b1;
 }
 
-.header{
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: var(--text-primary);
+    background-color: var(--bg-dark);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+.header {
     padding: 20px;
     position: sticky;
     top: 0;
+    z-index: 1000;
+}
+
+.header-user span {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    margin-right: 10px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 
-.page{
+.page {
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-.content{
-    max-width: 800px;
+.content {
+    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
-    padding: 40px 20px ;
+    padding: 40px 20px;
     flex: 1 1 auto;
 }
-
 
 .header__img {
     display: block;
@@ -33,7 +66,83 @@ body {
     height: 48px;
 }
 
-h1 {
-    font-family: Montserrat,sans-serif;
+h1, h2, h3, h4, h5, h6 {
+    font-family: Montserrat, sans-serif;
     font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+h1 {
+    font-size: 2.2rem;
+}
+
+.form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    width: 100%;
+    border-color: #1a1d20;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+
+
+/* STYLES FOR HEADER BUTTONS */
+.header__img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.header__img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 15px rgba(40, 167, 69, 0.5);
+}
+
+
+.header-user .btn,
+.nav-link {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.header-user .btn:hover {
+  background-color: #28a745;
+  color: #fff !important;
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+  transform: translateY(-2px);
+}
+
+.header-user .btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff !important;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.nav-link:hover {
+  color: #28a745 !important;
+  text-decoration: underline;
+  transform: scale(1.05);
+}
+
+.header-user .btn,
+.nav-link {
+  will-change: transform, background-color, color, box-shadow;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .content {
+        padding: 20px 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
 }

@@ -14,14 +14,22 @@ def all():
     form = TeacherForm()
     form.teacher.choices = [t.name for t in User.query.filter_by(status='teacher')]
 
-    if request.method == 'POST':
-        teacher = request.form.get('teacher')
-        teacher_id = User.query.filter_by(name=teacher).first().id
+    if form.validate_on_submit():
+        teacher_name = form.teacher.data
+        teacher = User.query.filter_by(name=teacher_name).first()
+        if teacher:
+            return redirect(f"/?teacher_id={teacher.id}")
 
-        posts = Post.query.filter_by(teacher = teacher_id).order_by(Post.date.desc()).all()
+    teacher_id = request.args.get("teacher_id", type=int)
+    if teacher_id:
+        posts = Post.query.filter_by(teacher=teacher_id).order_by(Post.date.desc()).all()
+        teacher_obj = User.query.get(teacher_id)
+        if teacher_obj:
+            form.teacher.data = teacher_obj.name
     else:
         posts = Post.query.order_by(Post.date.desc()).limit(20).all()
-    return render_template('post/all.html', posts=posts, user=User ,form=form)
+
+    return render_template('post/all.html', posts=posts, user=User, form=form)
 
 
 @post.route('/post/create', methods=['POST', 'GET'])
