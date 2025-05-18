@@ -1,12 +1,41 @@
 {% extends 'main/base.html' %}
 
-{% block title %}Adding theme{% endblock %}
+{% block title %}Create New Theme{% endblock %}
 
 {% block content %}
-<form method="post" class="form-control d-flex flex-column gap-2">
-    <input name="subject"  type="text" placeholder="theme" class="form-control">
-    {{ form.student }}
+<form method="post" class="form-control d-flex flex-column gap-3 p-4">
+    {{ form.hidden_tag() }}  <!-- Не забываем про CSRF-токен -->
 
-    <input value="Add" type="submit" class="btn btn-success">
+    <div class="form-group">
+        {{ form.student.label(class="form-label") }}
+        {{ form.student(class="form-select") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.subject.label(class="form-label") }}
+        {{ form.subject(class="form-control", placeholder="Enter theme") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.discipline.label(class="form-label") }}
+        {{ form.discipline(class="form-control", placeholder="Enter discipline") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.group_number.label(class="form-label") }}
+        {{ form.group_number(class="form-control", placeholder="Enter group number") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.comment.label(class="form-label") }}
+        {{ form.comment(class="form-control", placeholder="Optional comment", rows=3) }}
+    </div>
+
+    <div class="form-check form-switch">
+        {{ form.is_checked(class="form-check-input") }}
+        {{ form.is_checked.label(class="form-check-label") }}
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Add Theme</button>
 </form>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, abort
+from flask import Blueprint, render_template, request, redirect, abort, flash
 from flask_login import login_required, current_user
 
 from ..models.user import User
@@ -12,22 +12,56 @@ post = Blueprint('post', __name__)
 @post.route('/', methods=['POST', 'GET'])
 def all():
     form = TeacherForm()
-    form.teacher.choices = [t.name for t in User.query.filter_by(status='teacher')]
 
-    if form.validate_on_submit():
-        teacher_name = form.teacher.data
-        teacher = User.query.filter_by(name=teacher_name).first()
-        if teacher:
-            return redirect(f"/?teacher_id={teacher.id}")
+    form.teacher.choices = [('', 'All teachers')] + [(t.id, t.name) for t in
+                                                          User.query.filter_by(status='teacher')]
 
-    teacher_id = request.args.get("teacher_id", type=int)
-    if teacher_id:
-        posts = Post.query.filter_by(teacher=teacher_id).order_by(Post.date.desc()).all()
-        teacher_obj = User.query.get(teacher_id)
-        if teacher_obj:
-            form.teacher.data = teacher_obj.name
+    disciplines = db.session.query(Post.discipline).distinct().all()
+    form.discipline_filter.choices = [('', 'All courses')] + [(d[0], d[0]) for d in disciplines if d[0]]
+
+    groups = db.session.query(Post.group_number).distinct().all()
+    form.group_filter.choices = [('', 'All groups')] + [(g[0], g[0]) for g in groups if g[0]]
+
+    query = Post.query
+
+    if request.method == 'POST':
+        teacher_id = form.teacher.data
+        discipline = form.discipline_filter.data
+        group = form.group_filter.data
+        show_checked = form.show_checked.data
     else:
-        posts = Post.query.order_by(Post.date.desc()).limit(20).all()
+        teacher_id = request.args.get('teacher_id')
+        discipline = request.args.get('discipline')
+        group = request.args.get('group')
+        show_checked = request.args.get('checked') == '1'
+
+        if teacher_id:
+            form.teacher.data = teacher_id
+        if discipline:
+            form.discipline_filter.data = discipline
+        if group:
+            form.group_filter.data = group
+        if show_checked:
+            form.show_checked.data = True
+
+    if teacher_id:
+        query = query.filter(Post.teacher == teacher_id)
+
+    if discipline:
+        query = query.filter(Post.discipline == discipline)
+
+    if group:
+        query = query.filter(Post.group_number == group)
+
+    if show_checked:
+        query = query.filter(Post.is_checked == True)
+
+    posts = query.order_by(Post.date.desc())
+
+    if not any([teacher_id, discipline, group, show_checked]):
+        posts = posts.limit(20)
+
+    posts = posts.all()
 
     return render_template('post/all.html', posts=posts, user=User, form=form)
 
@@ -39,10 +73,22 @@ def create():
     form.student.choices = [s.name for s in User.query.filter_by(status='user')]
     if request.method == 'POST':
         subject = request.form['subject']
+        discipline = request.form.get('discipline', '')
+        comment = request.form.get('comment', '')
+        group_number = request.form.get('group_number', '')
+        is_checked = bool(request.form.get('is_checked', False))
         student = request.form['student']
         student_id = User.query.filter_by(name=student).first().id
 
-        post = Post(teacher=current_user.id , subject=subject, student=student_id)
+        post = Post(
+            teacher=current_user.id,
+            subject=subject,
+            discipline=discipline,
+            comment=comment,
+            group_number=group_number,
+            is_checked=is_checked,
+            student=student_id
+        )
 
         try:
             db.session.add(post)
@@ -53,35 +99,57 @@ def create():
 
         return redirect('/')
     else:
-        return render_template('post/create.html', form = form )
+        return render_template('post/create.html', form=form)
 
 
 @post.route('/post/<int:id>/update', methods=['POST', 'GET'])
 @login_required
 def update(id):
-    post = Post.query.get(id)
-    if post.author.id == current_user.id:
+    post = Post.query.get_or_404(id)
 
-        form = StudentForm()
-        form.student.data = User.query.filter_by(id = post.student).first().name
-        form.student.choices = [s.name for s in User.query.filter_by(status='user')]
-        if request.method == 'POST':
-            post.subject = request.form.get('subject')
-            student = request.form.get('student')
-            post.student = User.query.filter_by(name = student).first()
-            try:
-                db.session.commit()
-                return redirect('/')
-            except Exception as e:
-                print(e)
-
-            return redirect('/')
-        else:
-            return render_template('post/update.html', post = post, form = form )
-
-    else:
+    # Authorization check
+    if post.author.id != current_user.id:
         abort(403)
 
+    form = StudentForm()
+    students = User.query.filter_by(status='user').all()
+    form.student.choices = [(str(s.id), s.name) for s in students]
+
+    if request.method == 'POST':
+        try:
+            post.subject = request.form.get('subject', '')
+            post.discipline = request.form.get('discipline', '')
+            post.comment = request.form.get('comment', '')
+            post.group_number = request.form.get('group_number', '')
+            post.is_checked = 'is_checked' in request.form
+
+            student_id = request.form.get('student')
+            student = User.query.get(student_id)
+
+            if not student:
+                flash('Selected student not found.', 'danger')
+                return redirect('/')
+
+            post.student = student.id
+
+            db.session.commit()
+            flash('Record successfully updated.', 'success')
+            return redirect('/')
+        except Exception as e:
+            print(f"Update error: {str(e)}")
+            db.session.rollback()
+            flash('Failed to update the record.', 'danger')
+
+    current_student = User.query.get(post.student)
+    if current_student:
+        form.student.data = str(post.student)
+    form.subject.data = post.subject
+    form.discipline.data = post.discipline
+    form.comment.data = post.comment
+    form.group_number.data = post.group_number
+    form.is_checked.data = post.is_checked
+
+    return render_template('post/update.html', form=form, post=post)
 
 
 @post.route('/post/<int:id>/delete', methods=['POST', 'GET'])

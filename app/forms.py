@@ -79,10 +79,56 @@ class LoginForm(FlaskForm):
 
 
 class StudentForm(FlaskForm):
-    student = SelectField('student', choices=[], render_kw={'class': 'form-control'})
+    student = SelectField(
+        'Student',
+        choices=[],
+        render_kw={'class': 'form-control'},
+        validators=[DataRequired()]
+    )
+    subject = StringField(
+        'Subject',
+        validators=[DataRequired(), Length(max=250)],
+        render_kw={'class': 'form-control', 'placeholder': 'Enter subject'}
+    )
+    discipline = StringField(
+        'Discipline',
+        validators=[DataRequired(), Length(max=100)],
+        render_kw={'class': 'form-control', 'placeholder': 'Enter discipline'}
+    )
+    comment = StringField(
+        'Comment',
+        validators=[Length(max=500)],
+        render_kw={'class': 'form-control', 'placeholder': 'Enter comment'}
+    )
+    group_number = StringField(
+        'Group Number',
+        validators=[DataRequired(), Length(max=20)],
+        render_kw={'class': 'form-control', 'placeholder': 'Enter group number'}
+    )
+    is_checked = BooleanField(
+        'Is Checked',
+        render_kw={'class': 'form-check-input'}
+    )
 
 
 class TeacherForm(FlaskForm):
-    teacher = SelectField('reacher', choices=[], render_kw={'class': 'form-control'})
-
-
+    teacher = SelectField(
+        'Teacher',
+        choices=[],
+        render_kw={'class': 'form-control'},
+        validators=[DataRequired()]
+    )
+    discipline_filter = SelectField(
+        'Filter by Discipline',
+        choices=[],
+        render_kw={'class': 'form-control'}
+    )
+    group_filter = SelectField(
+        'Filter by Group',
+        choices=[],
+        render_kw={'class': 'form-control'}
+    )
+    show_checked = BooleanField(
+        'Show only checked',
+        render_kw={'class': 'form-check-input'}
+    )
