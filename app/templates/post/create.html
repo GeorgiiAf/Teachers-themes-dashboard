@@ -4,7 +4,7 @@
 
 {% block content %}
 <form method="post" class="form-control d-flex flex-column gap-3 p-4">
-    {{ form.hidden_tag() }}  <!-- Не забываем про CSRF-токен -->
+    {{ form.hidden_tag() }}
 
     <div class="form-group">
         {{ form.student.label(class="form-label") }}

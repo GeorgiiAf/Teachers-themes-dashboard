@@ -7,8 +7,8 @@
     {{ form.hidden_tag() }}
 
     <div class="form-group">
-        <label class="form-label">Subject</label>
-        <input type="text" name="subject" class="form-control" value="{{ post.subject }}">
+        {{ form.subject.label(class="form-label") }}
+        {{ form.subject(class="form-control") }}
     </div>
 
     <div class="form-group">
@@ -17,24 +17,28 @@
     </div>
 
     <div class="form-group">
-        <label class="form-label">Discipline</label>
-        <input type="text" name="discipline" class="form-control" value="{{ post.discipline }}">
+        {{ form.discipline.label(class="form-label") }}
+        {{ form.discipline(class="form-control") }}
     </div>
 
     <div class="form-group">
-        <label class="form-label">Group Number</label>
-        <input type="text" name="group_number" class="form-control" value="{{ post.group_number }}">
+        {{ form.group_number.label(class="form-label") }}
+        {{ form.group_number(class="form-control") }}
     </div>
 
     <div class="form-group">
-        <label class="form-label">Comment</label>
-        <textarea name="comment" class="form-control" rows="3">{{ post.comment }}</textarea>
+        {{ form.comment.label(class="form-label") }}
+        {{ form.comment(class="form-control", rows=3) }}
+    </div>
+
+    <div class="form-group">
+        {{ form.deadline.label }}
+        {{ form.deadline(class="form-control") }}
     </div>
 
     <div class="form-check form-switch">
-        <input type="checkbox" name="is_checked" class="form-check-input" id="is_checked" {% if post.is_checked
-               %}checked{% endif %}>
-        <label class="form-check-label" for="is_checked">Is checked</label>
+        {{ form.is_checked(class="form-check-input") }}
+        {{ form.is_checked.label(class="form-check-label") }}
     </div>
 
     <button type="submit" class="btn btn-success mt-3">Update Theme</button>

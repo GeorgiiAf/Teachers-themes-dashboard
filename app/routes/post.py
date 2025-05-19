@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, render_template, request, redirect, abort, flash
 from flask_login import login_required, current_user
 
@@ -12,18 +14,13 @@ post = Blueprint('post', __name__)
 @post.route('/', methods=['POST', 'GET'])
 def all():
     form = TeacherForm()
-
     form.teacher.choices = [('', 'All teachers')] + [(t.id, t.name) for t in
                                                           User.query.filter_by(status='teacher')]
-
     disciplines = db.session.query(Post.discipline).distinct().all()
     form.discipline_filter.choices = [('', 'All courses')] + [(d[0], d[0]) for d in disciplines if d[0]]
-
     groups = db.session.query(Post.group_number).distinct().all()
     form.group_filter.choices = [('', 'All groups')] + [(g[0], g[0]) for g in groups if g[0]]
-
     query = Post.query
-
     if request.method == 'POST':
         teacher_id = form.teacher.data
         discipline = form.discipline_filter.data
@@ -80,6 +77,10 @@ def create():
         student = request.form['student']
         student_id = User.query.filter_by(name=student).first().id
 
+        # Handle deadline
+        deadline_str = request.form.get('deadline')
+        deadline = datetime.strptime(deadline_str, '%Y-%m-%d') if deadline_str else None
+
         post = Post(
             teacher=current_user.id,
             subject=subject,
@@ -87,7 +88,8 @@ def create():
             comment=comment,
             group_number=group_number,
             is_checked=is_checked,
-            student=student_id
+            student=student_id,
+            deadline=deadline
         )
 
         try:
@@ -96,6 +98,8 @@ def create():
             return redirect('/')
         except Exception as e:
             print(e)
+            db.session.rollback()
+            flash('Error creating post', 'danger')
 
         return redirect('/')
     else:
@@ -107,8 +111,8 @@ def create():
 def update(id):
     post = Post.query.get_or_404(id)
 
-    # Authorization check
-    if post.author.id != current_user.id:
+    # Проверка доступа (должен быть автор поста или есть отношение к teacher)
+    if post.teacher != current_user.id:
         abort(403)
 
     form = StudentForm()
@@ -116,41 +120,55 @@ def update(id):
     form.student.choices = [(str(s.id), s.name) for s in students]
 
     if request.method == 'POST':
-        try:
-            post.subject = request.form.get('subject', '')
-            post.discipline = request.form.get('discipline', '')
-            post.comment = request.form.get('comment', '')
-            post.group_number = request.form.get('group_number', '')
-            post.is_checked = 'is_checked' in request.form
+        if form.validate_on_submit():  # Проверка валидации формы
+            try:
+                post.subject = form.subject.data
+                post.discipline = form.discipline.data
+                post.comment = form.comment.data  # Используем имя из формы (comment)
+                post.group_number = form.group_number.data
+                post.is_checked = form.is_checked.data
 
-            student_id = request.form.get('student')
-            student = User.query.get(student_id)
+                # Обработка дедлайна напрямую из формы
+                post.deadline = form.deadline.data  # DateField автоматически преобразует
 
-            if not student:
-                flash('Selected student not found.', 'danger')
+                # Обработка студента
+                student_id = form.student.data
+                if student_id:
+                    student = User.query.get(student_id)
+                    if not student:
+                        flash('Выбранный студент не найден.', 'danger')
+                        return redirect('/')
+                    post.student = student.id
+
+                db.session.commit()
+                flash('Запись успешно обновлена.', 'success')
                 return redirect('/')
 
-            post.student = student.id
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Не удалось обновить запись: {str(e)}', 'danger')
+                print(f"Ошибка обновления: {str(e)}")
+        else:
+            # Если валидация не прошла, показываем ошибки
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"Ошибка в поле {getattr(form, field).label.text}: {error}", 'danger')
 
-            db.session.commit()
-            flash('Record successfully updated.', 'success')
-            return redirect('/')
-        except Exception as e:
-            print(f"Update error: {str(e)}")
-            db.session.rollback()
-            flash('Failed to update the record.', 'danger')
+    else:  # GET запрос
+        # Заполнение формы текущими значениями
+        current_student = User.query.get(post.student)
+        if current_student:
+            form.student.data = str(post.student)
+        form.subject.data = post.subject
+        form.discipline.data = post.discipline
+        form.comment.data = post.comment
+        form.group_number.data = post.group_number
+        form.is_checked.data = post.is_checked
 
-    current_student = User.query.get(post.student)
-    if current_student:
-        form.student.data = str(post.student)
-    form.subject.data = post.subject
-    form.discipline.data = post.discipline
-    form.comment.data = post.comment
-    form.group_number.data = post.group_number
-    form.is_checked.data = post.is_checked
+        # Установка даты дедлайна
+        form.deadline.data = post.deadline
 
     return render_template('post/update.html', form=form, post=post)
-
 
 @post.route('/post/<int:id>/delete', methods=['POST', 'GET'])
 @login_required
