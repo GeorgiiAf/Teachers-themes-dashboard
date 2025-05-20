@@ -1,9 +1,13 @@
 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 
     <a href="{{ url_for('post.all')  }}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-        <img class="header__img" src="{{url_for('static', filename='img/student-phone.png') }}" alt="student">
-
+        <img class="header__img" src="{{url_for('static', filename='img/student-phone-80.png') }}" alt="student"
+             width="80"
+             height="80"
+             loading="lazy">
     </a>
+
+
     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="{{ url_for('post.all')  }}" class="nav-link px-2 text-white">Main page</a></li>
         {% if current_user.is_authenticated and current_user.status == 'teacher' %}

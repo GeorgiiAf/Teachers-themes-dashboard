@@ -15,5 +15,5 @@ class Post(db.Model):
 
     def is_deadline_passed(self):
         if self.deadline:
-            return datetime.utcnow() > self.deadline
+            return datetime.utcnow().date() > self.deadline
         return False

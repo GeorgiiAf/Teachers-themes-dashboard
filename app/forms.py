@@ -97,7 +97,7 @@ class StudentForm(FlaskForm):
     )
     group_number = StringField(
         'Group Number',
-        validators=[DataRequired(), Length(max=20)],
+        validators=[ Length(max=20)],
         render_kw={'class': 'form-control', 'placeholder': 'Enter group number'}
     )
     is_checked = BooleanField(

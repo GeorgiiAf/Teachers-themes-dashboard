@@ -90,7 +90,34 @@ table tr:hover {
   transform: translateY(-1px);
 }
 
-/* Адаптивность для мобильных */
+
+.welcome-section {
+    position: relative;
+    background: url('../img/bg-pic.jpg') no-repeat center center;
+    background-size: cover;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.welcome-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    z-index: 1;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+}
+
+.logo {
+    max-height: 120px;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.3));
+}
+
+
 @media (max-width: 768px) {
   .table-responsive {
     border-radius: 0;

@@ -1,6 +1,6 @@
 {% extends 'main/base.html' %}
 
-{% block title %}All themes{% endblock %}
+{% block title %}Theme Portal{% endblock %}
 
 {% block style %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/libs/all.min.css') }}">
@@ -8,18 +8,52 @@
 {% endblock %}
 
 {% block content %}
-<form method="post" class="form-control d-flex flex-row gap-2" id="teacherForm">
-    {{ form.csrf_token }}
-    {{ form.teacher }}
-    {{ form.discipline_filter }}
-    {{ form.group_filter }}
-    <div class="form-check ms-2">
-        {{ form.show_checked }}
-        <label class="form-check-label">
-            Only checked
-        </label>
+<div class="welcome-section text-center text-white">
+    <div class="welcome-overlay"></div>
+    <div class="welcome-content container py-5">
+        <img src="{{ url_for('static', filename='img/student-phone-80.png') }}" alt="Logo" class="logo mb-3"
+             width="80"
+             height="80"
+             loading="lazy"
+        >
+        <h1 class="display-5 fw-bold">Welcome to the Theme Portal</h1>
+        <p class="lead">Here you can filter, manage, and review all student-submitted themes in one place.</p>
     </div>
-    <input type="submit" class="btn btn-success" value="Show">
+</div>
+
+<h1>All Themes</h1>
+
+<form method="post" class="row g-2 align-items-end mb-4" id="teacherForm">
+    {{ form.csrf_token }}
+
+    <div class="col-md-3">
+        {{ form.teacher.label(class="form-label") }}
+        {{ form.teacher(class="form-select form-select-sm") }}
+    </div>
+
+    <div class="col-md-3">
+        {{ form.discipline_filter.label(class="form-label") }}
+        {{ form.discipline_filter(class="form-select form-select-sm") }}
+    </div>
+
+    <div class="col-md-3">
+        {{ form.group_filter.label(class="form-label") }}
+        {{ form.group_filter(class="form-select form-select-sm") }}
+    </div>
+
+    <div class="col-md-2 d-flex align-items-center">
+        <div class="form-check">
+            {{ form.show_checked(class="form-check-input") }}
+            {{ form.show_checked.label(class="form-check-label ms-1") }}
+        </div>
+    </div>
+
+    <div class="col-md-1">
+    <button type="submit" class="btn btn-success btn-sm w-100"
+            style="background-color: #2e7d32; color: white;">
+        Show
+    </button>
+</div>
 </form>
 
 <div class="w-100 mt-4">
@@ -45,7 +79,7 @@
             <tr>
                 <td data-label="Teacher">
                     <div class="teacher-name">
-                        <img src="{% if post.author.avatar %}{{ url_for('static', filename='upload/' + post.author.avatar) }}{% else %}{{ url_for('static', filename='img/default.jpg') }}{% endif %}"
+                        <img src="{% if post.author.avatar %}{{ url_for('static', filename='upload/' + post.author.avatar) }}{% else %}{{ url_for('static', filename='img/default-min.jpg') }}{% endif %}"
                              alt="Teacher" class="avatar">
                         {{ post.author.name }}
                     </div>
@@ -56,8 +90,13 @@
                 <td data-label="Student">
                     {% with student = user.query.get(post.student) %}
                     <div class="student-name">
-                        <img src="{% if student.avatar %}{{ url_for('static', filename='upload/' + student.avatar) }}{% else %}{{ url_for('static', filename='img/default.jpg') }}{% endif %}"
-                             alt="Student" class="avatar">
+                        <img src="{% if student.avatar %}{{ url_for('static', filename='upload/' + student.avatar) }}{% else %}{{ url_for('static', filename='img/default-min.jpg') }}{% endif %}"
+                             alt="Student" class="avatar"
+                             width="58.75"
+                             height="58.75"
+                             loading="lazy"
+
+                        >
                         {{ student.name }}
                     </div>
                     {% endwith %}

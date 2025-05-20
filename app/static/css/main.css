@@ -62,8 +62,8 @@ body {
 
 .header__img {
     display: block;
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -135,6 +135,22 @@ h1 {
 }
 
 
+footer {
+    background-color: #212529;
+    color: #f8f9fa;
+    padding: 2rem 0;
+    font-size: 0.9rem;
+}
+
+footer .nav-link {
+    color: #ced4da;
+    transition: color 0.3s ease;
+}
+
+footer .nav-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
 
 
 @media (max-width: 768px) {
