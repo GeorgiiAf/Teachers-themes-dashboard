@@ -1,0 +1,34 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Your Assigned Topics</h2>
+
+{% for post in posts %}
+<div class="card mb-3 p-3 shadow-sm">
+    <h4 class="mb-2">{{ post.subject }}</h4>
+    <p><strong>Discipline:</strong> {{ post.discipline }}</p>
+    <p><strong>Status:</strong>
+        {% if post.is_checked %}
+            <span class="badge bg-success">Approved</span>
+        {% else %}
+            <span class="badge bg-warning text-dark">Awaiting approval</span>
+        {% endif %}
+    </p>
+    <p><strong>Deadline:</strong>
+        {% if post.deadline %}
+            {{ post.deadline.strftime('%Y-%m-%d') }}
+        {% else %}
+            <em>Not set</em>
+        {% endif %}
+    </p>
+    <p><strong>Comments:</strong> {{ post.comment or 'No comments yet' }}</p>
+
+    <div class="d-flex gap-2">
+        <a href="{{ url_for('student.upload_work', post_id=post.id) }}" class="btn btn-primary btn-sm">Upload Work</a>
+        <a href="{{ url_for('student.add_comment', post_id=post.id) }}" class="btn btn-outline-secondary btn-sm">Leave Comment</a>
+    </div>
+</div>
+{% else %}
+<p>No topics assigned yet.</p>
+{% endfor %}
+{% endblock %}
