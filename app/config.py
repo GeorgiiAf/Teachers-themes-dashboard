@@ -5,6 +5,7 @@ class Config(object):
     ROOT = os.path.abspath(APPNAME)
     UPLOAD_PATH = '/static/upload/'
     SERVER_PATH = ROOT + UPLOAD_PATH
+    SERVER_PATH_DOCS = SERVER_PATH + 'docs'
 
     USER = os.environ.get('POSTGRES_USER', 'gosha')
     PASSWORD = os.environ.get('POSTGRES_PASSWORD', '1234')

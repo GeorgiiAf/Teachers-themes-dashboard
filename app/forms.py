@@ -23,7 +23,7 @@ class RegistrationForm(FlaskForm):
 
     password = PasswordField(
         'Password',
-        validators=[DataRequired()],
+        validators=[DataRequired(), Length(min=8, message='Password must be at least 8 characters')],
         render_kw={'class': 'form-control', 'placeholder': 'Password'}
     )
 

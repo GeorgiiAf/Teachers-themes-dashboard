@@ -12,6 +12,8 @@ class Post(db.Model):
     student = db.Column(db.Integer)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     deadline = db.Column(db.Date, nullable=True)
+    student_comment = db.Column(db.Text, nullable=True)
+    student_file = db.Column(db.String(100), nullable=True)
 
     def is_deadline_passed(self):
         if self.deadline:

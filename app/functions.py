@@ -16,3 +16,10 @@ def save_picture(picture):
     return picture_fn
 
 
+def save_file(file):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(file.filename)
+    file_fn = random_hex + f_ext
+    file_path = os.path.join(current_app.config['SERVER_PATH_DOCS'], file_fn)
+    file.save(file_path)
+    return file_fn

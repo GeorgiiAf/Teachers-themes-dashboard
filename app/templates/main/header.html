@@ -14,6 +14,12 @@
         <li><a href="{{ url_for('post.create')  }}" class="nav-link px-2 text-white">Add theme</a></li>
         {% endif %}
 
+
+        {% if current_user.is_authenticated and current_user.status == 'user' %}
+        <li><a href="{{ url_for('student.dashboard') }}" class="nav-link px-2 text-white">My Themes</a></li>
+        {% endif %}
+
+
     </ul>
 
     <div class="text-end d-flex align-items-center justify-content-end gap-2 header-user">
@@ -23,7 +29,8 @@
         <a href="{{ url_for('user.logout') }}" class="btn btn-outline-light me-2">Logout</a>
         {% else %}
         <a href="{{ url_for('user.login') }}" class="btn btn-outline-light me-2">Login</a>
-        <a href="{{ url_for('user.register') }}" class="btn btn-warning">Sign-up</a>
+        <a href="/user/register" class="btn btn-primary">Sign-up</a>
+
         {% endif %}
 
     </div>

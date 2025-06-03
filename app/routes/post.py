@@ -111,7 +111,6 @@ def create():
 def update(id):
     post = Post.query.get_or_404(id)
 
-    # Проверка доступа (должен быть автор поста или есть отношение к teacher)
     if post.teacher != current_user.id:
         abort(403)
 
@@ -120,42 +119,36 @@ def update(id):
     form.student.choices = [(str(s.id), s.name) for s in students]
 
     if request.method == 'POST':
-        if form.validate_on_submit():  # Проверка валидации формы
+        if form.validate_on_submit():
             try:
                 post.subject = form.subject.data
                 post.discipline = form.discipline.data
-                post.comment = form.comment.data  # Используем имя из формы (comment)
+                post.comment = form.comment.data
                 post.group_number = form.group_number.data
                 post.is_checked = form.is_checked.data
+                post.deadline = form.deadline.data
 
-                # Обработка дедлайна напрямую из формы
-                post.deadline = form.deadline.data  # DateField автоматически преобразует
-
-                # Обработка студента
                 student_id = form.student.data
                 if student_id:
                     student = User.query.get(student_id)
                     if not student:
-                        flash('Выбранный студент не найден.', 'danger')
+                        flash('Selected student not found', 'danger')
                         return redirect('/')
                     post.student = student.id
 
                 db.session.commit()
-                flash('Запись успешно обновлена.', 'success')
+                flash('Post updated successfully', 'success')
                 return redirect('/')
 
             except Exception as e:
                 db.session.rollback()
-                flash(f'Не удалось обновить запись: {str(e)}', 'danger')
-                print(f"Ошибка обновления: {str(e)}")
+                flash(f'Error updating post: {str(e)}', 'danger')
         else:
-            # Если валидация не прошла, показываем ошибки
             for field, errors in form.errors.items():
                 for error in errors:
-                    flash(f"Ошибка в поле {getattr(form, field).label.text}: {error}", 'danger')
+                    flash(f"Error in field {getattr(form, field).label.text}: {error}", 'danger')
 
-    else:  # GET запрос
-        # Заполнение формы текущими значениями
+    else:
         current_student = User.query.get(post.student)
         if current_student:
             form.student.data = str(post.student)
@@ -164,8 +157,6 @@ def update(id):
         form.comment.data = post.comment
         form.group_number.data = post.group_number
         form.is_checked.data = post.is_checked
-
-        # Установка даты дедлайна
         form.deadline.data = post.deadline
 
     return render_template('post/update.html', form=form, post=post)

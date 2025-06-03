@@ -4,9 +4,10 @@
 <h2 class="mb-4">Your Assigned Topics</h2>
 
 {% for post in posts %}
-<div class="card mb-3 p-3 shadow-sm">
-    <h4 class="mb-2">{{ post.subject }}</h4>
+<div class="card mb-4 p-4 shadow-sm">
+    <h3 class="mb-3">{{ post.subject }}</h3>
     <p><strong>Discipline:</strong> {{ post.discipline }}</p>
+
     <p><strong>Status:</strong>
         {% if post.is_checked %}
             <span class="badge bg-success">Approved</span>
@@ -14,6 +15,7 @@
             <span class="badge bg-warning text-dark">Awaiting approval</span>
         {% endif %}
     </p>
+
     <p><strong>Deadline:</strong>
         {% if post.deadline %}
             {{ post.deadline.strftime('%Y-%m-%d') }}
@@ -21,14 +23,29 @@
             <em>Not set</em>
         {% endif %}
     </p>
-    <p><strong>Comments:</strong> {{ post.comment or 'No comments yet' }}</p>
 
-    <div class="d-flex gap-2">
-        <a href="{{ url_for('student.upload_work', post_id=post.id) }}" class="btn btn-primary btn-sm">Upload Work</a>
-        <a href="{{ url_for('student.add_comment', post_id=post.id) }}" class="btn btn-outline-secondary btn-sm">Leave Comment</a>
+    <p><strong>Teacher's comments:</strong> {{ post.comment or 'No comments yet' }}</p>
+    <p><strong>Your comments:</strong> {{ post.student_comment or 'No comments yet' }}</p>
+
+    <div class="d-flex gap-2 align-items-center mt-3">
+        {% if post.student_file %}
+            <a href="{{ url_for('static', filename='upload/docs/' + post.student_file) }}" class="btn btn-success btn-sm" target="_blank">
+                📄 Downloaded File
+            </a>
+        {% else %}
+            <span class="text-muted">You haven't uploaded a file yet.</span>
+            <a href="{{ url_for('student.upload', post_id=post.id) }}" class="btn btn-primary btn-sm">
+                📤 Upload Work
+            </a>
+        {% endif %}
+
+        <a href="{{ url_for('student.comment', post_id=post.id) }}" class="btn btn-outline-secondary btn-sm">
+            💬 Leave Comment
+        </a>
     </div>
 </div>
 {% else %}
 <p>No topics assigned yet.</p>
 {% endfor %}
+
 {% endblock %}

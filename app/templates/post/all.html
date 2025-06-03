@@ -49,11 +49,11 @@
     </div>
 
     <div class="col-md-1">
-    <button type="submit" class="btn btn-success btn-sm w-100"
-            style="background-color: #2e7d32; color: white;">
-        Show
-    </button>
-</div>
+        <button type="submit" class="btn btn-success btn-sm w-100"
+                style="background-color: #2e7d32; color: white;">
+            Show
+        </button>
+    </div>
 </form>
 
 <div class="w-100 mt-4">
@@ -70,6 +70,8 @@
                 <th scope="col">Status</th>
                 <th scope="col">Comments</th>
                 {% if current_user.is_authenticated %}
+                <th scope="col">Student File</th>
+                <th scope="col">Student Comments</th>
                 <th scope="col">Actions</th>
                 {% endif %}
             </tr>
@@ -95,7 +97,6 @@
                              width="58.75"
                              height="58.75"
                              loading="lazy"
-
                         >
                         {{ student.name }}
                     </div>
@@ -111,8 +112,6 @@
                     No deadline
                     {% endif %}
                 </td>
-
-
                 <td data-label="Status">
                     {% if post.is_checked %}
                     <span class="badge bg-success">checked</span>
@@ -132,44 +131,61 @@
                     {% else %}
                     No comments
                     {% endif %}
-
-                    <!-- Modal for full comments -->
-                    {% for post in posts %}
-                    <!-- Модальное окно для комментария -->
-                    <div class="modal fade" id="commentsModal{{ post.id }}" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Full comment</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    {{ post.comment }}
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
                 </td>
 
-                {% if current_user.is_authenticated and post.author.id == current_user.id %}
+                {% if current_user.is_authenticated %}
+                <td data-label="Student File">
+                    {% if post.teacher == current_user.id %}
+                        {% if post.student_file %}
+                        <a href="{{ url_for('static', filename='upload/docs/' + post.student_file) }}" target="_blank">Student file</a>
+                        {% else %}
+                        No file
+                        {% endif %}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td data-label="Student Comment">
+                    {% if post.teacher == current_user.id %}
+                        {{ post.student_comment or 'No comment' }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
                 <td data-label="Actions">
+                    {% if post.author.id == current_user.id %}
                     <a href="{{ url_for('post.update', id=post.id) }}" class="btn btn-secondary btn-sm">
                         <i class="fa-solid fa-pen-to-square"></i> Change
                     </a>
                     <a href="{{ url_for('post.delete', id=post.id) }}" class="btn btn-danger btn-sm">
                         <i class="fa-solid fa-trash"></i> Delete
                     </a>
+                    {% endif %}
                 </td>
-                {% elif current_user.is_authenticated %}
-                <td data-label="Actions"></td>
                 {% endif %}
             </tr>
+
+            <!-- Modal for full comments -->
+            {% if post.comment and post.comment|length > 50 %}
+            <div class="modal fade" id="commentsModal{{ post.id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Full comment</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{ post.comment }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             {% endfor %}
             </tbody>
         </table>

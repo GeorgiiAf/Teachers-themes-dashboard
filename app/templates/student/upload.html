@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'main/base.html' %}
+
+{% block title %}Upload work for {{ post.subject }} {% endblock %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="file-upload" class="form-label">Select file to upload</label>
+        <input type="file" name="file" id="file-upload" class="form-control" required aria-describedby="file-help">
+        <div id="file-help" class="form-text">Please select your work file (PDF, DOCX, or image formats)</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+{% endblock %}

@@ -33,15 +33,19 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
+    background-color: var(--bg-dark);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-user span {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
+    color: var(--text-heading);
+    font-weight: 600;
     margin-right: 10px;
-    padding: 4px 10px;
+    padding: 6px 12px;
     border-radius: 6px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(78, 115, 223, 0.15);
+    border: 1px solid rgba(78, 115, 223, 0.3);
 }
 
 
@@ -89,49 +93,49 @@ h1 {
 }
 
 
-
 /* STYLES FOR HEADER BUTTONS */
 .header__img {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 8px;
-  cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .header__img:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 15px rgba(40, 167, 69, 0.5);
+    transform: scale(1.1);
+    box-shadow: 0 8px 15px rgba(40, 167, 69, 0.5);
 }
 
 
 .header-user .btn,
 .nav-link {
-  transition: all 0.3s ease;
-  cursor: pointer;
+      color: #e9ecef !important;
+    transition: all 0.3s ease;
+    cursor: pointer;
+        font-weight: 500;
+
 }
 
 .header-user .btn:hover {
-  background-color: #28a745;
-  color: #fff !important;
-  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
-  transform: translateY(-2px);
+    background-color: var(--accent-primary);
+    color: #fff !important;
+    box-shadow: 0 4px 8px rgba(78, 115, 223, 0.4);
+    transform: translateY(-2px);
+}
+
+
+.header-user .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .header-user .btn-outline-light:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: #fff !important;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .nav-link:hover {
-  color: #28a745 !important;
-  text-decoration: underline;
-  transform: scale(1.05);
-}
-
-.header-user .btn,
-.nav-link {
-  will-change: transform, background-color, color, box-shadow;
+    color: var(--accent-primary) !important;
+    text-decoration: none;
+    transform: scale(1.05);
 }
 
 
