@@ -9,8 +9,8 @@ class Config(object):
 
     USER = os.environ.get('POSTGRES_USER', 'gosha')
     PASSWORD = os.environ.get('POSTGRES_PASSWORD', '1234')
-    HOST = os.environ.get('POSTGRES_HOST', 'localhost')
-    PORT = os.environ.get('POSTGRES_PORT', 5532)
+    HOST = os.environ.get('POSTGRES_HOST', 'postgres')
+    PORT = os.environ.get('POSTGRES_PORT', '5432')
     DB = os.environ.get('POSTGRES_DB', 'mydb')
 
     SQLALCHEMY_DATABASE_URI = f"postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB}"
