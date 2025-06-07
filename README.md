@@ -2,6 +2,14 @@
 
 A multi-page Flask web application designed to facilitate interaction between **teachers** and **students**. Includes user authentication, task assignment, deadline tracking, commenting, file submission, and more. Deployed with Docker using **uWSGI** and **Nginx**.
 
+
+<div align="center">
+  <img src="./screenshots/pic3.png.png" alt="Main Interface" width="45%">
+  <img src="./screenshots/pic2.png" alt="Adding theme as teacher" width="45%">
+  <img src="./screenshots/pic4.png" alt="Student View" width="90%">
+</div>
+
+
 ---
 
 ## 🔧 Tech Stack
