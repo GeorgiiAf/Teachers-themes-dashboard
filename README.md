@@ -122,11 +122,13 @@ flask db upgrade
 
 ## 🔄 Common Docker Commands
 
-Command	Description
-flask db init	Initialize new migration repository
-flask db migrate -m "message"	Create new migration
-flask db upgrade	Apply migrations
-flask db downgrade	Revert migration
+| Command                      | Description                          |
+|------------------------------|--------------------------------------|
+| `docker-compose up --build`   | Rebuild and start containers         |
+| `docker-compose down`         | Stop and remove containers           |
+| `docker-compose logs -f`      | View container logs <br>** |
+| `docker exec -it flask bash`  | Access app container shell           |
+| `docker system prune`         | Clean unused Docker objects <br>** |
 
 ## 🌱 Future Development
 This project is under active development and has strong potential for further expansion. Planned features include:
