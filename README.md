@@ -86,7 +86,8 @@ http://localhost:8080/
 ```
 
 ##  📁 Project Structure
-csharp
+
+```csharp
 
 .
 ├── app/
@@ -103,22 +104,25 @@ csharp
 │   ├── Dockerfile
 │   └── nginx.conf
 └── requirements.txt
+```
 
 ##  🐘 Working with Database
-bash
 
 
-
+```bash
 docker exec -it flask bash
 flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade
+```
+
 ## 🔄 Common Docker Commands
-Task	Command
-Rebuild containers	docker-compose up --build
-Stop all containers	docker-compose down
-Access Flask shell	docker exec -it flask bash
-View container logs	docker-compose logs -f
+
+Command	Description
+flask db init	Initialize new migration repository
+flask db migrate -m "message"	Create new migration
+flask db upgrade	Apply migrations
+flask db downgrade	Revert migration
 
 ## 🌱 Future Development
 This project is under active development and has strong potential for further expansion. Planned features include:
