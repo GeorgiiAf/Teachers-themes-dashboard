@@ -1,4 +1,4 @@
-# 📦 My Flask App
+# 📦 Teachers-themes-dashboard
 
 A multi-page Flask web application designed to facilitate interaction between **teachers** and **students**. Includes user authentication, task assignment, deadline tracking, commenting, file submission, and more. Deployed with Docker using **uWSGI** and **Nginx**.
 
