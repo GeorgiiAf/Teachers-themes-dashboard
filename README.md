@@ -4,7 +4,7 @@ A multi-page Flask web application designed to facilitate interaction between **
 
 
 <div align="center">
-  <img src="./screenshots/pic3.png.png" alt="Main Interface" width="45%">
+  <img src="./screenshots/pic3.png" alt="Main Interface" width="45%">
   <img src="./screenshots/pic2.png" alt="Adding theme as teacher" width="45%">
   <img src="./screenshots/pic4.png" alt="Student View" width="90%">
 </div>
