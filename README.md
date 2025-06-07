@@ -62,8 +62,11 @@ cd myproject
 ###  2. Create .env file
 
 ```.env
-SECRET_KEY=your_secret_key
-DATABASE_URL=postgresql://postgres:yourpassword@postgres:5432/mydatabase
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=mydb
 ```
 ### 3. Build and start the containers
 
