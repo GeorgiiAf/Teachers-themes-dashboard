@@ -1,4 +1,4 @@
-# 📦 My Flask App
+# 📦 Teachers-themes-dashboard
 
 A multi-page Flask web application designed to facilitate interaction between **teachers** and **students**. Includes user authentication, task assignment, deadline tracking, commenting, file submission, and more. Deployed with Docker using **uWSGI** and **Nginx**.
 
@@ -69,9 +69,13 @@ cd myproject
 
 ###  2. Create .env file
 
-.env
-SECRET_KEY=your_secret_key
-DATABASE_URL=postgresql://postgres:yourpassword@postgres:5432/mydatabase
+```.env
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=mydb
+```
 ### 3. Build and start the containers
 
 ```bash
@@ -126,11 +130,13 @@ flask db upgrade
 
 ## 🔄 Common Docker Commands
 
-Command	Description
-flask db init	Initialize new migration repository
-flask db migrate -m "message"	Create new migration
-flask db upgrade	Apply migrations
-flask db downgrade	Revert migration
+| Command                      | Description                          |
+|------------------------------|--------------------------------------|
+| `docker-compose up --build`   | Rebuild and start containers         |
+| `docker-compose down`         | Stop and remove containers           |
+| `docker-compose logs -f`      | View container logs <br>** |
+| `docker exec -it flask bash`  | Access app container shell           |
+| `docker system prune`         | Clean unused Docker objects <br>** |
 
 ## 🌱 Future Development
 This project is under active development and has strong potential for further expansion. Planned features include:
