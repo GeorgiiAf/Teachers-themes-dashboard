@@ -6,14 +6,10 @@ A multi-page Flask web application designed to facilitate interaction between **
 <div align="center">
     <img src="./screenshots/pic-main.png" alt="Main Interface" width="70%">  
     <p><strong>📋 Main Interface — Dashboard for teacher</strong></p> 
-    
-    ---
-    
+    <br> 
     <img src="./screenshots/login-pic.png" alt="Adding theme as teacher" width="70%">  
-    <p><strong>🔑 Login page — Login page for all users</strong></p> 
-    
-    ---
-    
+    <p><strong>🔑 Login page — Login page for all users</strong></p>   
+    <br>
     <img src="./screenshots/student-pic.png" alt="Student View" width="70%">  
     <p><strong>🎓 Student View — Submit files and comment on tasks</strong></p> 
 </div>
