@@ -8,7 +8,7 @@ class Config(object):
     SERVER_PATH_DOCS = SERVER_PATH + 'docs'
 
     USER = os.environ.get('POSTGRES_USER', 'gosha')
-    PASSWORD = os.environ.get('POSTGRES_PASSWOыырRD', '1234')
+    PASSWORD = os.environ.get('POSTGRES_PASSWORD', '1234')
     HOST = os.environ.get('POSTGRES_HOST', 'postgres')
     PORT = os.environ.get('POSTGRES_PORT', '5432')
     DB = os.environ.get('POSTGRES_DB', 'mydb')

@@ -61,6 +61,10 @@ You can also deploy the project to any cloud provider (Azure, AWS, Heroku, Rende
 
 ### 1. Clone the repository
 
+Warning : 
+
+
+
 ```bash
 git clone <repo-url>
 cd myproject
@@ -76,6 +80,10 @@ POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
 POSTGRES_DB=mydb
 ```
+
+for running locally, set `POSTGRES_HOST=localhost` and `POSTGRES_PORT=5532`
+
+
 ### 3. Build and start the containers
 
 ```bash
