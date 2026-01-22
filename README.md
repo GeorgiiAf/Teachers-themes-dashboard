@@ -56,8 +56,6 @@ You can also deploy the project to any cloud provider (Azure, AWS, Heroku, Rende
 
 ### 1. Clone the repository
 
-Warning : Currently, cloning only works correctly under Linux and WSL. I'm working on a fix!
-
 
 
 ```bash
@@ -153,6 +151,7 @@ This project is under active development and has strong potential for further ex
 ✅ File version history
 
 ✅ Dashboard with statistics and analytics
+
 
 
 
