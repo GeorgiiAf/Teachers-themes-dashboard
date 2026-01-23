@@ -7,7 +7,8 @@ class Config(object):
     SERVER_PATH = ROOT + UPLOAD_PATH
     SERVER_PATH_DOCS = SERVER_PATH + 'docs'
 
-    USER = os.environ.get('POSTGRES_USER', 'gosha')
+# Database configuration
+    USER = os.environ.get('POSTGRES_USER', '') # Set your default username here
     PASSWORD = os.environ.get('POSTGRES_PASSWORD', '1234')
     HOST = os.environ.get('POSTGRES_HOST', 'postgres')
     PORT = os.environ.get('POSTGRES_PORT', '5432')
